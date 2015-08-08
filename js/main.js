@@ -1,6 +1,11 @@
 
 window.onload = function () {
 
+  Physijs.scripts.worker = 'js/physii_worker.js';
+  Physijs.scripts.ammo = 'ammo.min.js';
+
+  TWEEN.start();
+
   //THREEJS RELATED VARIABLES 
 
   var scene, 
@@ -15,6 +20,9 @@ window.onload = function () {
       light, 
       renderer,
       container;
+
+  var render, createShape, NoiseGen, table,
+     physics_stats, ground, ground_geometry, ground_material, camera;    
 
   //SCENE
   var floor, brid1, bird2;
@@ -31,7 +39,15 @@ window.onload = function () {
   //INIT THREE JS, SCREEN AND MOUSE EVENTS
 
   function init(){
-    scene = new THREE.Scene();
+    scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
+    scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
+    scene.addEventListener(
+      'update',
+      function() {
+        scene.simulate( undefined, 2 );
+        physics_stats.update();
+      }
+    );
     HEIGHT = window.innerHeight;
     WIDTH = window.innerWidth;
     aspectRatio = WIDTH / HEIGHT;
@@ -369,7 +385,19 @@ window.onload = function () {
     floor.rotation.x = -Math.PI/2;
     floor.position.y = -33;
     floor.receiveShadow = true;
-    scene.add(floor);
+    //scene.add(floor);
+
+    // Table
+    table = new Physijs.BoxMesh(
+      new THREE.CubeGeometry(1000, 5, 1000),
+      new THREE.MeshBasicMaterial({color: 0xe0dacd}),
+      0, // mass
+      { restitution: .2, friction: .8 }
+    );
+    table.position.y = -Math.PI/2;
+    table.position.y = -38;
+    table.receiveShadow = true;
+    scene.add( table );
   }
 
   function createBirds(){
