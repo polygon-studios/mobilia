@@ -379,7 +379,39 @@ window.onload = function () {
    
   }
 
-  
+  function createBox (){
+    var box_geometry = new THREE.CubeGeometry( 30, 30, 30);
+    var shape, material = new THREE.MeshLambertMaterial({ opacity: 0, transparent: true });
+
+    shape = new Physijs.BoxMesh(
+            box_geometry,
+            material
+          );
+
+    shape.material.color.setRGB( Math.random() * 100 / 100, Math.random() * 100 / 100, Math.random() * 100 / 100 );
+    shape.castShadow = true;
+    shape.receiveShadow = true;
+
+
+    shape.position.set(
+      Math.random() * 30 - 15,
+      20,
+      Math.random() * 30 - 15
+    );
+
+    shape.rotation.set(
+      Math.random() * Math.PI,
+      Math.random() * Math.PI,
+      Math.random() * Math.PI
+    );
+
+    scene.add( shape );
+
+    new TWEEN.Tween(shape.material).to({opacity: 1}, 500).start();
+    console.log("Successfully created cube bruh");
+  }
+
+
   function createFloor(){ 
     floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(1000,1000), new THREE.MeshBasicMaterial({color: 0xe0dacd}));
     floor.rotation.x = -Math.PI/2;
