@@ -21,7 +21,7 @@ window.onload = function () {
       renderer,
       container;
 
-  var render, createShape, NoiseGen, table,
+  var render, createShape, NoiseGen, table, table2,
      physics_stats, ground, ground_geometry, ground_material, camera;    
 
   //SCENE
@@ -54,11 +54,8 @@ window.onload = function () {
     fieldOfView = 60;
     nearPlane = 1;
     farPlane = 2000; 
-    camera = new THREE.PerspectiveCamera(
-      fieldOfView,
-      aspectRatio,
-      nearPlane,
-      farPlane);
+    camera = new THREE.OrthographicCamera(
+      WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, nearPlane, farPlane);
     camera.position.z = 1000;  
     camera.position.y = 0;
     camera.lookAt(new THREE.Vector3(0,0,0));    
@@ -421,7 +418,7 @@ window.onload = function () {
 
     // Table
     table = new Physijs.BoxMesh(
-      new THREE.CubeGeometry(1000, 5, 1000),
+      new THREE.CubeGeometry(1000, 50, 1000),
       new THREE.MeshBasicMaterial({color: 0xe0dacd}),
       0, // mass
       { restitution: .2, friction: .8 }
@@ -430,6 +427,19 @@ window.onload = function () {
     table.position.y = -38;
     table.receiveShadow = true;
     scene.add( table );
+
+    // Table2
+    table2 = new Physijs.BoxMesh(
+      new THREE.CubeGeometry(1000, 50, 1000),
+      new THREE.MeshBasicMaterial({color: 0xe0dacd}),
+      0, // mass
+      { restitution: .2, friction: .8 }
+    );
+    table2.position.y = -Math.PI/2;
+    table2.position.y = -18;
+    table2.position.x = 1500;
+    table2.receiveShadow = true;
+    scene.add( table2 );
   }
 
   function createBirds(){
