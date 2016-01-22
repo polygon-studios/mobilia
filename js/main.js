@@ -6,6 +6,304 @@ window.onload = function () {
 
   TWEEN.start();
 
+  // Platform positions
+  var platforms = [
+    {
+      "id"    : "1",
+      "type"  : "cloud",
+      "x_pos" : "100",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "2",
+      "type"  : "cloud",
+      "x_pos" : "200",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "3",
+      "type"  : "cloud",
+      "x_pos" : "400",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "4",
+      "type"  : "cloud",
+      "x_pos" : "1400",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "5",
+      "type"  : "cloud",
+      "x_pos" : "2000",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "6",
+      "type"  : "cloud",
+      "x_pos" : "2100",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "7",
+      "type"  : "cloud",
+      "x_pos" : "2400",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "8",
+      "type"  : "cloud",
+      "x_pos" : "2500",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "9",
+      "type"  : "cloud",
+      "x_pos" : "2700",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "10",
+      "type"  : "cloud",
+      "x_pos" : "3200",
+      "y_pos" : "800",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "11",
+      "type"  : "cloud",
+      "x_pos" : "3300",
+      "y_pos" : "800",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "12",
+      "type"  : "cloud",
+      "x_pos" : "3800",
+      "y_pos" : "900",
+      "colour": 0xF5E5B9
+    },
+    {
+      "id"    : "13",
+      "type"  : "tree",
+      "x_pos" : "400",
+      "y_pos" : "200",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "14",
+      "type"  : "tree",
+      "x_pos" : "400",
+      "y_pos" : "700",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "15",
+      "type"  : "tree",
+      "x_pos" : "500",
+      "y_pos" : "700",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "16",
+      "type"  : "tree",
+      "x_pos" : "600",
+      "y_pos" : "700",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "17",
+      "type"  : "tree",
+      "x_pos" : "600",
+      "y_pos" : "300",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "18",
+      "type"  : "tree",
+      "x_pos" : "600",
+      "y_pos" : "900",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "19",
+      "type"  : "tree",
+      "x_pos" : "900",
+      "y_pos" : "900",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "20",
+      "type"  : "tree",
+      "x_pos" : "1100",
+      "y_pos" : "800",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "21",
+      "type"  : "tree",
+      "x_pos" : "1200",
+      "y_pos" : "800",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "22",
+      "type"  : "tree",
+      "x_pos" : "1200",
+      "y_pos" : "600",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "23",
+      "type"  : "tree",
+      "x_pos" : "3500",
+      "y_pos" : "400",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "24",
+      "type"  : "tree",
+      "x_pos" : "3600",
+      "y_pos" : "900",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "25",
+      "type"  : "tree",
+      "x_pos" : "3900",
+      "y_pos" : "700",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "26",
+      "type"  : "tree",
+      "x_pos" : "4000",
+      "y_pos" : "900",
+      "colour": 0x52A588
+    },
+    {
+      "id"    : "27",
+      "type"  : "log",
+      "x_pos" : "800",
+      "y_pos" : "500",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "28",
+      "type"  : "log",
+      "x_pos" : "900",
+      "y_pos" : "500",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "28",
+      "type"  : "log",
+      "x_pos" : "1000",
+      "y_pos" : "500",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "28",
+      "type"  : "log",
+      "x_pos" : "800",
+      "y_pos" : "300",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "29",
+      "type"  : "log",
+      "x_pos" : "900",
+      "y_pos" : "300",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "30",
+      "type"  : "log",
+      "x_pos" : "1000",
+      "y_pos" : "300",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "31",
+      "type"  : "log",
+      "x_pos" : "1400",
+      "y_pos" : "600",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "32",
+      "type"  : "log",
+      "x_pos" : "1600",
+      "y_pos" : "600",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "33",
+      "type"  : "log",
+      "x_pos" : "1800",
+      "y_pos" : "600",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "34",
+      "type"  : "log",
+      "x_pos" : "1900",
+      "y_pos" : "600",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "35",
+      "type"  : "log",
+      "x_pos" : "2000",
+      "y_pos" : "600",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "36",
+      "type"  : "log",
+      "x_pos" : "2400",
+      "y_pos" : "500",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "37",
+      "type"  : "log",
+      "x_pos" : "2500",
+      "y_pos" : "500",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "38",
+      "type"  : "log",
+      "x_pos" : "2600",
+      "y_pos" : "500",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "39",
+      "type"  : "log",
+      "x_pos" : "3100",
+      "y_pos" : "500",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "40",
+      "type"  : "log",
+      "x_pos" : "3200",
+      "y_pos" : "500",
+      "colour": 0x996633
+    },
+  ];
+
   //THREEJS RELATED VARIABLES
 
   var scene,
@@ -81,8 +379,9 @@ window.onload = function () {
     controls.maxPolarAngle = Math.PI / 2;
     controls.noZoom = false;
     controls.noPan = false;
-    controls.noRotate = false;
-    controls.minZoom = 0.1;
+    controls.noRotate = true;
+    controls.zoom = 0.4;
+    controls.minZoom = 0.3;
 		controls.maxZoom = 1;
   }
 
@@ -104,6 +403,7 @@ window.onload = function () {
     if (event.touches.length > 1) {
       event.preventDefault();
       mousePos = {x:event.touches[0].pageX, y:event.touches[0].pageY};
+      socket.emit('getPositions');
     }
   }
 
@@ -425,27 +725,35 @@ window.onload = function () {
         { restitution: .2, friction: .8 }
       );
       groundBlock.position.y = -100;
-      groundBlock.position.x = 100 * i;
+      groundBlock.position.x = 100 * i + 100;
       groundBlock.receiveShadow = true;
       scene.add( groundBlock );
     }
-    // Table
-    table = new Physijs.BoxMesh(
-      new THREE.CubeGeometry(100, 100, 100),
-      new THREE.MeshBasicMaterial({color: 0xe0da43}),
-      0, // mass
-      { restitution: .2, friction: .8 }
-    );
-    table.position.y = -100;
-    table.receiveShadow = true;
-    scene.add( table );
 
+  }
 
+  function createPlatforms() {
+    for(var i = 0; i < platforms.length; i++) {
+        var obj = platforms[i];
+        // Platform block
+        var platformBlock = new Physijs.BoxMesh(
+          new THREE.CubeGeometry(100, 100, 100),
+          new THREE.MeshBasicMaterial({color: obj.colour}),
+          0, // mass
+          { restitution: .2, friction: .8 }
+        );
+        console.log(obj.colour);
+        platformBlock.position.y = obj.y_pos;
+        platformBlock.position.x = obj.x_pos;
+        platformBlock.receiveShadow = true;
+        scene.add( platformBlock );
+    }
   }
 
   function createBirds(){
     bird1 = new Bird();
     bird1.threegroup.position.x = 0;
+    bird1.threegroup.position.y = 0;
     scene.add(bird1.threegroup);
   }
 
@@ -470,6 +778,7 @@ window.onload = function () {
   init();
   createLights();
   createFloor();
+  createPlatforms();
   createBirds();
   loop();
 }
