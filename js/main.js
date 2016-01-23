@@ -302,6 +302,91 @@ window.onload = function () {
       "y_pos" : "500",
       "colour": 0x996633
     },
+    {
+      "id"    : "41",
+      "type"  : "log",
+      "x_pos" : "3300",
+      "y_pos" : "500",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "42",
+      "type"  : "log",
+      "x_pos" : "100",
+      "y_pos" : "200",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "43",
+      "type"  : "log",
+      "x_pos" : "2700",
+      "y_pos" : "300",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "44",
+      "type"  : "log",
+      "x_pos" : "2800",
+      "y_pos" : "300",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "45",
+      "type"  : "log",
+      "x_pos" : "2900",
+      "y_pos" : "300",
+      "colour": 0x996633
+    },
+    {
+      "id"    : "46",
+      "type"  : "stone",
+      "x_pos" : "1300",
+      "y_pos" : "300",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "47",
+      "type"  : "stone",
+      "x_pos" : "1400",
+      "y_pos" : "300",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "48",
+      "type"  : "stone",
+      "x_pos" : "1500",
+      "y_pos" : "300",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "49",
+      "type"  : "stone",
+      "x_pos" : "3800",
+      "y_pos" : "200",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "50",
+      "type"  : "stone",
+      "x_pos" : "3700",
+      "y_pos" : "200",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "51",
+      "type"  : "stone",
+      "x_pos" : "3600",
+      "y_pos" : "200",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "52",
+      "type"  : "stone",
+      "x_pos" : "3500",
+      "y_pos" : "200",
+      "colour": 0x808080
+    },
+
   ];
 
   //THREEJS RELATED VARIABLES
@@ -350,8 +435,8 @@ window.onload = function () {
     WIDTH = window.innerWidth;
     aspectRatio = WIDTH / HEIGHT;
     fieldOfView = 60;
-    nearPlane = 1;
-    farPlane = 1000;
+    nearPlane = 0.1;
+    farPlane = 10000;
     camera = new THREE.OrthographicCamera(
       WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, nearPlane, farPlane);
     camera.position.z = 100;
@@ -379,7 +464,7 @@ window.onload = function () {
     controls.maxPolarAngle = Math.PI / 2;
     controls.noZoom = false;
     controls.noPan = false;
-    controls.noRotate = true;
+    controls.noRotate = false;
     controls.zoom = 0.4;
     controls.minZoom = 0.3;
 		controls.maxZoom = 1;
@@ -420,14 +505,14 @@ window.onload = function () {
 
   function createLights() {
     light = new THREE.HemisphereLight(0xffffff, 0xffffff, .5)
+    light.castShadow = true;
 
     shadowLight = new THREE.DirectionalLight(0xffffff, .8);
-    shadowLight.position.set(200, 200, 200);
+    shadowLight.position.set(0.5, 1, 0.5);
     shadowLight.castShadow = true;
-    shadowLight.shadowDarkness = .2;
 
     backLight = new THREE.DirectionalLight(0xffffff, .4);
-    backLight.position.set(-100, 200, 50);
+    backLight.position.set(0.5, 1, -0.5);
     backLight.shadowDarkness = .1;
     backLight.castShadow = true;
 
@@ -720,11 +805,11 @@ window.onload = function () {
     for(var i = 0; i < 40; i++){
       var groundBlock = new Physijs.BoxMesh(
         new THREE.CubeGeometry(100, 100, 100),
-        new THREE.MeshBasicMaterial({color: 0xe0dacd}),
+        new THREE.MeshLambertMaterial({color: 0xe0dacd}),
         0, // mass
         { restitution: .2, friction: .8 }
       );
-      groundBlock.position.y = -100;
+      groundBlock.position.y = 0;
       groundBlock.position.x = 100 * i + 100;
       groundBlock.receiveShadow = true;
       scene.add( groundBlock );
@@ -735,25 +820,27 @@ window.onload = function () {
   function createPlatforms() {
     for(var i = 0; i < platforms.length; i++) {
         var obj = platforms[i];
-        // Platform block
-        var platformBlock = new Physijs.BoxMesh(
-          new THREE.CubeGeometry(100, 100, 100),
-          new THREE.MeshBasicMaterial({color: obj.colour}),
-          0, // mass
-          { restitution: .2, friction: .8 }
-        );
-        console.log(obj.colour);
+
+        var box_geometry = new THREE.CubeGeometry( 100, 100, 100);
+        var platformBlock, material = new THREE.MeshLambertMaterial({ color: obj.colour});
+
+        platformBlock = new Physijs.BoxMesh(
+                box_geometry,
+                material
+              );
+
         platformBlock.position.y = obj.y_pos;
         platformBlock.position.x = obj.x_pos;
         platformBlock.receiveShadow = true;
+        platformBlock.castShadow = true;
         scene.add( platformBlock );
     }
   }
 
   function createBirds(){
     bird1 = new Bird();
-    bird1.threegroup.position.x = 0;
-    bird1.threegroup.position.y = 0;
+    bird1.threegroup.position.x = 2000;
+    bird1.threegroup.position.y = 100;
     scene.add(bird1.threegroup);
   }
 
