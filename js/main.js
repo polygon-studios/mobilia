@@ -531,7 +531,7 @@ window.onload = function () {
   					INTERSECTED = null;
 
   				}
-      if(posX)
+      if(posX != null)
         placeTrap(posX, posY);
   }
 
