@@ -402,7 +402,10 @@ window.onload = function () {
       backLight,
       light,
       renderer,
-      container;
+      container,
+      raycaster;
+
+  var mouse = new THREE.Vector2(), INTERSECTED;
 
   var render, createShape, NoiseGen, table, table2,
      physics_stats, ground, ground_geometry, ground_material, camera;
@@ -439,13 +442,13 @@ window.onload = function () {
     farPlane = 10000;
     camera = new THREE.OrthographicCamera(
       WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, nearPlane, farPlane);
-    camera.position.z = 100;
-    camera.position.y = 100;
-    camera.position.x = 2000;
+    camera.position.z = 1000;
+    camera.position.y = 140;
+    camera.position.x = 1900;
     renderer = new THREE.WebGLRenderer({alpha: true, antialias: true });
     renderer.setSize(WIDTH, HEIGHT);
     renderer.shadowMapEnabled = true;
-
+    raycaster = new THREE.Raycaster();
     container = document.getElementById('world');
     container.appendChild(renderer.domElement);
 
@@ -454,6 +457,7 @@ window.onload = function () {
 
     window.addEventListener('resize', onWindowResize, false);
     document.addEventListener('mousemove', handleMouseMove, false);
+    document.addEventListener('mousedown', handleMouseDown, false);
     document.addEventListener('touchstart', handleTouchStart, false);
     document.addEventListener('touchend', handleTouchEnd, false);
     document.addEventListener('touchmove',handleTouchMove, false);
@@ -464,10 +468,11 @@ window.onload = function () {
     controls.maxPolarAngle = Math.PI / 2;
     controls.noZoom = false;
     controls.noPan = false;
-    controls.noRotate = false;
-    controls.zoom = 0.4;
+    controls.noRotate = true;
     controls.minZoom = 0.3;
-		controls.maxZoom = 1;
+		controls.maxZoom = 2;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
   }
 
   function onWindowResize() {
@@ -481,25 +486,59 @@ window.onload = function () {
   }
 
   function handleMouseMove(event) {
-    mousePos = {x:event.clientX, y:event.clientY};
+
   }
 
   function handleTouchStart(event) {
     if (event.touches.length > 1) {
-      event.preventDefault();
-      mousePos = {x:event.touches[0].pageX, y:event.touches[0].pageY};
-      socket.emit('getPositions');
+      //event.preventDefault();
+      //mousePos = {x:event.touches[0].pageX, y:event.touches[0].pageY};
+      socket.emit('open');
     }
   }
 
   function handleTouchEnd(event) {
-      mousePos = {x:windowHalfX, y:windowHalfY};
+      //mousePos = {x:windowHalfX, y:windowHalfY};
+  }
+
+  function handleMouseDown(event) {
+      var posX, posY;
+      mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      raycaster.setFromCamera( mouse, camera );
+
+      var intersects = raycaster.intersectObjects( scene.children );
+
+  				if ( intersects.length > 0 ) {
+
+  					if ( INTERSECTED != intersects[ 0 ].object ) {
+
+  						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+  						INTERSECTED = intersects[ 0 ].object;
+  						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+  						INTERSECTED.material.emissive.setHex( 0xff0000 );
+              console.log(INTERSECTED.position.x);
+              posX = (INTERSECTED.position.x/100) - 1;
+              posY = (INTERSECTED.position.y/100);
+
+  					}
+
+  				} else {
+
+  					if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+  					INTERSECTED = null;
+
+  				}
+      if(posX)
+        placeTrap(posX, posY);
   }
 
   function handleTouchMove(event) {
     if (event.touches.length == 1) {
-      event.preventDefault();
-      mousePos = {x:event.touches[0].pageX, y:event.touches[0].pageY};
+      //event.preventDefault();
+      //mousePos = {x:event.touches[0].pageX, y:event.touches[0].pageY};
     }
   }
 
@@ -811,7 +850,7 @@ window.onload = function () {
       );
       groundBlock.position.y = 0;
       groundBlock.position.x = 100 * i + 100;
-      groundBlock.receiveShadow = true;
+      //groundBlock.receiveShadow = true;
       scene.add( groundBlock );
     }
 
@@ -824,15 +863,15 @@ window.onload = function () {
         var box_geometry = new THREE.CubeGeometry( 100, 100, 100);
         var platformBlock, material = new THREE.MeshLambertMaterial({ color: obj.colour});
 
-        platformBlock = new Physijs.BoxMesh(
+        platformBlock = new THREE.Mesh(
                 box_geometry,
                 material
               );
 
         platformBlock.position.y = obj.y_pos;
         platformBlock.position.x = obj.x_pos;
-        platformBlock.receiveShadow = true;
-        platformBlock.castShadow = true;
+        //platformBlock.receiveShadow = true;
+        //platformBlock.castShadow = true;
         scene.add( platformBlock );
     }
   }
@@ -850,7 +889,7 @@ window.onload = function () {
     var tempVA = (mousePos.y - windowHalfY)/200;
     var userHAngle = Math.min(Math.max(tempHA, -Math.PI/3), Math.PI/3);
     var userVAngle = Math.min(Math.max(tempVA, -Math.PI/3), Math.PI/3);
-    bird1.look(userHAngle,userVAngle);
+    //bird1.look(userHAngle,userVAngle);
 
     render();
     requestAnimationFrame(loop);
@@ -858,6 +897,10 @@ window.onload = function () {
 
   function render(){
     controls.update();
+
+    raycaster.setFromCamera( mouse, camera );
+
+
     renderer.render(scene, camera);
   }
 
@@ -866,6 +909,6 @@ window.onload = function () {
   createLights();
   createFloor();
   createPlatforms();
-  createBirds();
+  //createBirds();
   loop();
 }
