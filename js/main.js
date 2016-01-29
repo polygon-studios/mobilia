@@ -386,6 +386,69 @@ window.onload = function () {
       "y_pos" : "200",
       "colour": 0x808080
     },
+    {
+      "id"    : "53",
+      "type"  : "floater",
+      "x_pos" : "200",
+      "y_pos" : "700",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "54",
+      "type"  : "floater",
+      "x_pos" : "500",
+      "y_pos" : "500",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "55",
+      "type"  : "floater",
+      "x_pos" : "2700",
+      "y_pos" : "700",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "56",
+      "type"  : "floater",
+      "x_pos" : "2900",
+      "y_pos" : "900",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "57",
+      "type"  : "floater",
+      "x_pos" : "2900",
+      "y_pos" : "600",
+      "colour": 0x808080
+    },
+    {
+      "id"    : "58",
+      "type"  : "grass",
+      "x_pos" : "200",
+      "y_pos" : "400",
+      "colour": 0x33ccff
+    },
+    {
+      "id"    : "59",
+      "type"  : "grass",
+      "x_pos" : "300",
+      "y_pos" : "400",
+      "colour": 0x33ccff
+    },
+    {
+      "id"    : "60",
+      "type"  : "grass",
+      "x_pos" : "3500",
+      "y_pos" : "700",
+      "colour": 0x33ccff
+    },
+    {
+      "id"    : "61",
+      "type"  : "grass",
+      "x_pos" : "3600",
+      "y_pos" : "700",
+      "colour": 0x33ccff
+    },
 
   ];
 
