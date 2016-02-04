@@ -1,3 +1,7 @@
+var fox,
+    bear,
+    skunk,
+    rabbit;
 
 window.onload = function () {
 
@@ -469,6 +473,8 @@ window.onload = function () {
       raycaster;
 
   var mouse = new THREE.Vector2(), INTERSECTED;
+
+
 
   var render, createShape, NoiseGen, table, table2,
      physics_stats, ground, ground_geometry, ground_material, camera;
@@ -946,6 +952,22 @@ window.onload = function () {
     scene.add(bird1.threegroup);
   }
 
+  function createCharacters(){
+    var foxImg = new THREE.MeshBasicMaterial({
+        map:THREE.ImageUtils.loadTexture('img/fox.png')
+    });
+    foxImg.map.needsUpdate = true;
+
+    fox = new THREE.Mesh(new THREE.PlaneGeometry(100, 100),foxImg);
+    fox.overdraw = true;
+    scene.add(fox);
+  }
+
+  function foxMove(xPos, yPos) {
+    fox.position.x = xPos * 1.276;
+    fox.position.y = yPos * 1.25;
+    console.log("Fox X: " + fox.position.x + " Fox Y: " + fox.position.y );
+  }
 
   function loop(){
     var tempHA = (mousePos.x-windowHalfX)/200;
@@ -972,6 +994,13 @@ window.onload = function () {
   createLights();
   createFloor();
   createPlatforms();
+  createCharacters();
   //createBirds();
   loop();
+}
+
+window.moveFox = function(xPos, yPos){
+  fox.position.x = xPos * 1.276 * 100 + 100;
+  fox.position.y = yPos * 1.35 * 100 + 50;
+  console.log("Fox X: " + fox.position.x + " Fox Y: " + fox.position.y );
 }
