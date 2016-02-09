@@ -1,8 +1,8 @@
 // Connect to prod mobilia namespace
-var socket = io.connect('http://45.55.90.100:3000/mobilia');
+//var socket = io.connect('http://45.55.90.100:3000/mobilia');
 
 // Uncomment for local
-//var socket = io.connect('http://127.0.0.1:4000/mobilia');
+var socket = io.connect('http://127.0.0.1:4000/mobilia');
 
 // Successfull connect handler
 socket.on('connected', function (data) {
@@ -17,8 +17,8 @@ socket.on('userTrap', function (data) {
 
 // Position handler
 socket.on('playerPositions', function (data) {
-  console.log(data);
   moveFox(data.foxX, data.foxY);
+  moveSkunk(data.skunkX, data.skunkY);
 });
 
 socket.on('unity', function (data) {
@@ -27,8 +27,8 @@ socket.on('unity', function (data) {
 
 
 // Places a trap
-function placeTrap(posX, posY) {
-  socket.emit('trap-Place', { 'pos-x': posX,
+function placeTrap(posX, posY, trapType) {
+  socket.emit('trap-Place', { 'trap' : "bramble",
+                              'pos-x': posX,
                               'pos-y': posY});
-  console.log('Position X: ' + posX + ' Position Y: ' + posY);
 };
