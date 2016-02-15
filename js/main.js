@@ -1,463 +1,41 @@
+/**
+ * main.js
+ * ----------------------------------
+ * Creates physical 3D platforms and handles character movement
+ * and trap placement
+ * Sends & receives mobile data from websockets
+ * @threejs
+ */
+
+
+/*
+* Global character objects
+*/
+
 var fox,
     bear,
     skunk,
     rabbit;
 
+/*
+* Global JavaScript functions
+*/
+
+window.moveFox = function(xPos, yPos){
+  fox.position.x = xPos * 1.276 * 10 + 10;
+  fox.position.y = yPos * 1.35 * 10 + 5;
+  console.log("Fox X: " + fox.position.x + " Fox Y: " + fox.position.y );
+}
+
+window.moveSkunk = function(xPos, yPos){
+  skunk.position.x = xPos * 1.276 * 10 + 10;
+  skunk.position.y = yPos * 1.35 * 10 + 5;
+  console.log("Skunk X: " + skunk.position.x + " Skunk Y: " + skunk.position.y );
+}
+
 window.onload = function () {
 
-  Physijs.scripts.worker = 'js/physii_worker.js';
-  Physijs.scripts.ammo = 'ammo.min.js';
-
-  TWEEN.start();
-
-  // Platform positions
-  var platforms = [
-    {
-      "id"    : "1",
-      "type"  : "cloud",
-      "x_pos" : "10",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "2",
-      "type"  : "cloud",
-      "x_pos" : "20",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "3",
-      "type"  : "cloud",
-      "x_pos" : "40",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "4",
-      "type"  : "cloud",
-      "x_pos" : "140",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "5",
-      "type"  : "cloud",
-      "x_pos" : "200",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "6",
-      "type"  : "cloud",
-      "x_pos" : "210",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "7",
-      "type"  : "cloud",
-      "x_pos" : "240",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "8",
-      "type"  : "cloud",
-      "x_pos" : "250",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "9",
-      "type"  : "cloud",
-      "x_pos" : "270",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "10",
-      "type"  : "cloud",
-      "x_pos" : "320",
-      "y_pos" : "80",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "11",
-      "type"  : "cloud",
-      "x_pos" : "330",
-      "y_pos" : "80",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "12",
-      "type"  : "cloud",
-      "x_pos" : "380",
-      "y_pos" : "90",
-      "colour": 0xF5E5B9
-    },
-    {
-      "id"    : "13",
-      "type"  : "tree",
-      "x_pos" : "40",
-      "y_pos" : "20",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "14",
-      "type"  : "tree",
-      "x_pos" : "40",
-      "y_pos" : "70",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "15",
-      "type"  : "tree",
-      "x_pos" : "50",
-      "y_pos" : "70",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "16",
-      "type"  : "tree",
-      "x_pos" : "60",
-      "y_pos" : "70",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "17",
-      "type"  : "tree",
-      "x_pos" : "60",
-      "y_pos" : "30",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "18",
-      "type"  : "tree",
-      "x_pos" : "60",
-      "y_pos" : "90",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "19",
-      "type"  : "tree",
-      "x_pos" : "90",
-      "y_pos" : "90",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "20",
-      "type"  : "tree",
-      "x_pos" : "110",
-      "y_pos" : "80",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "21",
-      "type"  : "tree",
-      "x_pos" : "120",
-      "y_pos" : "80",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "22",
-      "type"  : "tree",
-      "x_pos" : "120",
-      "y_pos" : "60",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "23",
-      "type"  : "tree",
-      "x_pos" : "350",
-      "y_pos" : "40",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "24",
-      "type"  : "tree",
-      "x_pos" : "360",
-      "y_pos" : "90",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "25",
-      "type"  : "tree",
-      "x_pos" : "390",
-      "y_pos" : "70",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "26",
-      "type"  : "tree",
-      "x_pos" : "400",
-      "y_pos" : "90",
-      "colour": 0x52A588
-    },
-    {
-      "id"    : "27",
-      "type"  : "log",
-      "x_pos" : "80",
-      "y_pos" : "50",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "28",
-      "type"  : "log",
-      "x_pos" : "90",
-      "y_pos" : "50",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "28",
-      "type"  : "log",
-      "x_pos" : "100",
-      "y_pos" : "50",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "28",
-      "type"  : "log",
-      "x_pos" : "80",
-      "y_pos" : "30",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "29",
-      "type"  : "log",
-      "x_pos" : "90",
-      "y_pos" : "30",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "30",
-      "type"  : "log",
-      "x_pos" : "100",
-      "y_pos" : "30",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "31",
-      "type"  : "log",
-      "x_pos" : "140",
-      "y_pos" : "60",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "32",
-      "type"  : "log",
-      "x_pos" : "160",
-      "y_pos" : "60",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "33",
-      "type"  : "log",
-      "x_pos" : "180",
-      "y_pos" : "60",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "34",
-      "type"  : "log",
-      "x_pos" : "190",
-      "y_pos" : "60",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "35",
-      "type"  : "log",
-      "x_pos" : "200",
-      "y_pos" : "60",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "36",
-      "type"  : "log",
-      "x_pos" : "240",
-      "y_pos" : "50",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "37",
-      "type"  : "log",
-      "x_pos" : "250",
-      "y_pos" : "50",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "38",
-      "type"  : "log",
-      "x_pos" : "260",
-      "y_pos" : "50",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "39",
-      "type"  : "log",
-      "x_pos" : "310",
-      "y_pos" : "50",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "40",
-      "type"  : "log",
-      "x_pos" : "320",
-      "y_pos" : "50",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "41",
-      "type"  : "log",
-      "x_pos" : "330",
-      "y_pos" : "50",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "42",
-      "type"  : "log",
-      "x_pos" : "10",
-      "y_pos" : "20",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "43",
-      "type"  : "log",
-      "x_pos" : "270",
-      "y_pos" : "30",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "44",
-      "type"  : "log",
-      "x_pos" : "280",
-      "y_pos" : "30",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "45",
-      "type"  : "log",
-      "x_pos" : "290",
-      "y_pos" : "30",
-      "colour": 0x996633
-    },
-    {
-      "id"    : "46",
-      "type"  : "stone",
-      "x_pos" : "130",
-      "y_pos" : "30",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "47",
-      "type"  : "stone",
-      "x_pos" : "140",
-      "y_pos" : "30",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "48",
-      "type"  : "stone",
-      "x_pos" : "150",
-      "y_pos" : "30",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "49",
-      "type"  : "stone",
-      "x_pos" : "380",
-      "y_pos" : "20",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "50",
-      "type"  : "stone",
-      "x_pos" : "370",
-      "y_pos" : "20",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "51",
-      "type"  : "stone",
-      "x_pos" : "360",
-      "y_pos" : "20",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "52",
-      "type"  : "stone",
-      "x_pos" : "350",
-      "y_pos" : "20",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "53",
-      "type"  : "floater",
-      "x_pos" : "20",
-      "y_pos" : "70",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "54",
-      "type"  : "floater",
-      "x_pos" : "50",
-      "y_pos" : "50",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "55",
-      "type"  : "floater",
-      "x_pos" : "270",
-      "y_pos" : "70",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "56",
-      "type"  : "floater",
-      "x_pos" : "290",
-      "y_pos" : "90",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "57",
-      "type"  : "floater",
-      "x_pos" : "290",
-      "y_pos" : "60",
-      "colour": 0x808080
-    },
-    {
-      "id"    : "58",
-      "type"  : "grass",
-      "x_pos" : "20",
-      "y_pos" : "40",
-      "colour": 0x33ccff
-    },
-    {
-      "id"    : "59",
-      "type"  : "grass",
-      "x_pos" : "30",
-      "y_pos" : "40",
-      "colour": 0x33ccff
-    },
-    {
-      "id"    : "60",
-      "type"  : "grass",
-      "x_pos" : "350",
-      "y_pos" : "70",
-      "colour": 0x33ccff
-    },
-    {
-      "id"    : "61",
-      "type"  : "grass",
-      "x_pos" : "360",
-      "y_pos" : "70",
-      "colour": 0x33ccff
-    },
-
-  ];
-
   //THREEJS RELATED VARIABLES
-
   var scene,
       camera,
       controls,
@@ -470,39 +48,25 @@ window.onload = function () {
       light,
       renderer,
       container,
-      raycaster;
-
-  var mouse = new THREE.Vector2(), INTERSECTED;
-
-
-
-  var render, createShape, NoiseGen, table, table2,
-     physics_stats, ground, ground_geometry, ground_material, camera;
-
-  //SCENE
-  var floor, brid1, bird2;
+      raycaster,
+      render;
 
   //SCREEN VARIABLES
-
   var HEIGHT,
       WIDTH,
       windowHalfX,
       windowHalfY,
       mousePos = {x:0,y:0};
 
+  var mouse = new THREE.Vector2(), INTERSECTED;
 
-  //INIT THREE JS, SCREEN AND MOUSE EVENTS
+  var mapPlane;
 
+
+  // Initialize three.js, screen space & mouse events
   function init(){
     scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
-    scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
-    scene.addEventListener(
-      'update',
-      function() {
-        scene.simulate( undefined, 2 );
-        physics_stats.update();
-      }
-    );
+
     HEIGHT = window.innerHeight;
     WIDTH = window.innerWidth;
     aspectRatio = WIDTH / HEIGHT;
@@ -524,6 +88,7 @@ window.onload = function () {
     windowHalfX = WIDTH / 2;
     windowHalfY = HEIGHT / 2;
 
+    // Event listeners
     window.addEventListener('resize', onWindowResize, false);
     document.addEventListener('mousemove', handleMouseMove, false);
     document.addEventListener('mousedown', handleMouseDown, false);
@@ -531,6 +96,7 @@ window.onload = function () {
     document.addEventListener('touchend', handleTouchEnd, false);
     document.addEventListener('touchmove',handleTouchMove, false);
 
+    // Setting up camera controls & restrictions
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.target = new THREE.Vector3(200,10,-100);
     controls.minPolarAngle = -Math.PI / 2;
@@ -541,7 +107,7 @@ window.onload = function () {
     controls.minZoom = 4;
 		controls.maxZoom = 10;
     controls.enableDamping = true;
-    controls.dampingFactor = 0.25;
+    controls.dampingFactor = 0.5;
   }
 
   function onWindowResize() {
@@ -552,6 +118,7 @@ window.onload = function () {
     renderer.setSize(WIDTH, HEIGHT);
     camera.aspect = WIDTH / HEIGHT;
     camera.updateProjectionMatrix();
+    render();
   }
 
   function handleMouseMove(event) {
@@ -588,7 +155,6 @@ window.onload = function () {
   						INTERSECTED = intersects[ 0 ].object;
   						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
   						INTERSECTED.material.emissive.setHex( 0xff0000 );
-              console.log(INTERSECTED.position.x);
               posX = (INTERSECTED.position.x/10) - 1;
               posY = (INTERSECTED.position.y/10);
 
@@ -613,12 +179,10 @@ window.onload = function () {
   }
 
   function createLights() {
-    light = new THREE.HemisphereLight(0xffffff, 0xffffff, .5)
-    //light.castShadow = true;
+    light = new THREE.HemisphereLight(0xffffff, 0xffffff, .5);
 
     shadowLight = new THREE.DirectionalLight(0xffffff, .8);
     shadowLight.position.set(0.5, 1, 0.5);
-    //shadowLight.castShadow = true;
 
     backLight = new THREE.DirectionalLight(0xffffff, .4);
     backLight.position.set(0.5, 1, -0.5);
@@ -633,19 +197,18 @@ window.onload = function () {
 
 
   function createFloor(){
-    floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(100,100), new THREE.MeshBasicMaterial({color: 0xe0dacd}));
-    floor.rotation.x = -Math.PI/2;
-    floor.position.y = -33;
-    floor.receiveShadow = true;
-    //scene.add(floor);
 
     for(var i = 0; i < 40; i++){
-      var groundBlock = new Physijs.BoxMesh(
-        new THREE.CubeGeometry(10, 10, 10),
-        new THREE.MeshLambertMaterial({color: 0xe0dacd}),
-        0, // mass
-        { restitution: .2, friction: .8 }
+
+
+      var box_geometry = new THREE.CubeGeometry( 10, 10, 10);
+      var groundBlock, material = new THREE.MeshLambertMaterial({ color: 0xe0dacd});
+
+      groundBlock = new THREE.Mesh(
+        box_geometry,
+        material
       );
+
       groundBlock.position.y = 0;
       groundBlock.position.x = 10 * i + 10;
       //groundBlock.receiveShadow = true;
@@ -692,18 +255,20 @@ window.onload = function () {
     skunk.overdraw = true;
     scene.add(skunk);
   }
-  /*
+
   function createMap(){
     var mapImg = new THREE.MeshBasicMaterial({
-        map:THREE.ImageUtils.loadTexture('img/map.png')
+        map:THREE.ImageUtils.loadTexture('img/mapv2.png'),
+        transparent: true,
+        opacity: 0.5
     });
-    mapImg.map.needsUpdate = true;
+    //mapImg.map.needsUpdate = true;
 
-    var mapPlane = new THREE.Mesh(new THREE.PlaneBufferGeometry(400, 100),mapImg);
+    mapPlane = new THREE.Mesh(new THREE.PlaneBufferGeometry(400, 100),mapImg);
     mapPlane.overdraw = true;
     scene.add(mapPlane);
   }
-  */
+
 
   function foxMove(xPos, yPos) {
     fox.position.x = xPos * 1.276;
@@ -719,6 +284,8 @@ window.onload = function () {
 
     render();
     requestAnimationFrame(loop);
+    mapPlane.position.x = 205;
+    mapPlane.position.y = 55;
   }
 
   function render(){
@@ -736,18 +303,6 @@ window.onload = function () {
   createFloor();
   createPlatforms();
   createCharacters();
-  //createMap();
+  createMap();
   loop();
-}
-
-window.moveFox = function(xPos, yPos){
-  fox.position.x = xPos * 1.276 * 10 + 10;
-  fox.position.y = yPos * 1.35 * 10 + 5;
-  console.log("Fox X: " + fox.position.x + " Fox Y: " + fox.position.y );
-}
-
-window.moveSkunk = function(xPos, yPos){
-  skunk.position.x = xPos * 1.276 * 10 + 10;
-  skunk.position.y = yPos * 1.35 * 10 + 5;
-  console.log("Skunk X: " + skunk.position.x + " Skunk Y: " + skunk.position.y );
 }
