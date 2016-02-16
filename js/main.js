@@ -9,13 +9,15 @@
 
 
 /*
-* Global character objects
+* Global character and trap objects
 */
 
 var fox,
     bear,
     skunk,
-    rabbit;
+    rabbit,
+    trapType = 'bramble';
+
 
 /*
 * Global JavaScript functions
@@ -32,6 +34,28 @@ window.moveSkunk = function(xPos, yPos){
   skunk.position.y = yPos * 1.35 * 10 + 5;
   console.log("Skunk X: " + skunk.position.x + " Skunk Y: " + skunk.position.y );
 }
+
+$( document ).ready(function() {
+  $( ".bramble" ).click(function() {
+    $( ".trap" ).removeClass( "selected" );
+    $( ".bramble" ).addClass( "selected" );
+    trapType = 'bramble'
+  });
+
+  $( ".button" ).click(function() {
+    $( ".trap" ).removeClass( "selected" );
+    $( ".button" ).addClass( "selected" );
+    trapType = 'button'
+  });
+
+  $( ".pinecone" ).click(function() {
+    $( ".trap" ).removeClass( "selected" );
+    $( ".pinecone" ).addClass( "selected" );
+    trapType = 'pinecone'
+  });
+});
+
+
 
 window.onload = function () {
 
@@ -90,7 +114,6 @@ window.onload = function () {
 
     // Event listeners
     window.addEventListener('resize', onWindowResize, false);
-    document.addEventListener('mousemove', handleMouseMove, false);
     document.addEventListener('mousedown', handleMouseDown, false);
     document.addEventListener('touchstart', handleTouchStart, false);
     document.addEventListener('touchend', handleTouchEnd, false);
@@ -120,11 +143,7 @@ window.onload = function () {
     camera.updateProjectionMatrix();
     render();
   }
-
-  function handleMouseMove(event) {
-
-  }
-
+  
   function handleTouchStart(event) {
     if (event.touches.length > 1) {
       //event.preventDefault();
@@ -142,7 +161,7 @@ window.onload = function () {
       mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
   		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
       raycaster.setFromCamera( mouse, camera );
-      var trapType = 'bramble';
+
 
       var intersects = raycaster.intersectObjects( scene.children );
 
@@ -221,7 +240,7 @@ window.onload = function () {
     for(var i = 0; i < platforms.length; i++) {
         var obj = platforms[i];
 
-        var box_geometry = new THREE.CubeGeometry( 10, 10, 10);
+        var box_geometry = new THREE.BoxGeometry( 10, 10, 10);
         var platformBlock, material = new THREE.MeshLambertMaterial({ color: obj.colour});
 
         platformBlock = new THREE.Mesh(

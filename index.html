@@ -1,12 +1,13 @@
 <html>
 	<head>
-		<link re="stylesheet" text="text/css" href="css/main.css">
+		<link rel="stylesheet" text="text/css" href="css/main.css">
 		<script type="text/javascript" src="js/three.min.js"></script>
 		<script type="text/javascript" src="js/OrbitControls.js"></script>
 		<script type="text/javascript" src="js/physii.js"></script>
 		<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
 		<script type="text/javascript" src="js/platforms.json"></script>
 		<script type="text/javascript" src="js/socketio.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 		<script type="text/javascript" src="js/main.js"></script>
 
 
@@ -14,7 +15,17 @@
 
 	<body>
 		<div id="world"></div>
-
+		<div id="traps">
+			<div class="bramble trap selected">
+				<h3>Bramble</h3>
+			</div>
+			<div class="button trap">
+				<h3>Button</h3>
+			</div>
+			<div class="pinecone trap">
+				<h3>Pinecone</h3>
+			</div
+		</div>
 	</body>
 
 </html>

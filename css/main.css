@@ -1,6 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:800);
 #world {
-  background: linear-gradient(#652e37, #652e37);
+  background: linear-gradient(#E6E6E6, #EBFFEA);
   position:absolute;
   width:100%;
   height:100%;
@@ -39,18 +39,24 @@
 #credits a {
   color:#f7575f;
 }
+#traps {
+  position: fixed;
+  bottom: 0;
+  background-color: #4CAF50;
+  border-radius: 5px 5px 0px 0px;
+  margin: 0 auto;
+  width: 50%;
+  left: 25%;
+  padding: 5px;
+}
+.trap {
+  background-color: #EFEFEF;
+  margin: 0px 10px;
+  text-align: center;
+  float: left;
+  width: 30%;
+}
 
-#power {
-  position:absolute;
-  width:100%;
-  top:50%;
-  margin: auto;
-  margin-top:-220px;
-  font-family:'Open Sans', sans-serif;
-  color:#481f26;
-  font-size: 4em;
-  text-transform: uppercase;
-  text-align : center;
-  line-height : 1.5;
-  user-select: none;
+.selected {
+  background-color: #FF9500;
 }
